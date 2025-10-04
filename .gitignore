@@ -3,3 +3,4 @@ config/db.sqlite3
 config/db.sqlite3-shm
 config/db.sqlite3-wal
 config/notification.txt
+config/users_database.yml

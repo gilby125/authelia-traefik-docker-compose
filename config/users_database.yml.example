@@ -1,0 +1,20 @@
+---
+# User database template
+#
+# 1. Generate password hash:
+#    docker run authelia/authelia:latest authelia crypto hash generate argon2 --password 'yourpassword'
+#
+# 2. Copy this file to users_database.yml
+#
+# 3. Replace the password hash below with your generated hash
+#
+# 4. Update displayname, email, and groups as needed
+
+users:
+  admin:
+    displayname: "Admin User"
+    password: "REPLACE_WITH_YOUR_GENERATED_HASH"
+    email: admin@yourdomain.com
+    groups:
+      - admins
+      - dev

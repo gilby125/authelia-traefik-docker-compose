@@ -53,20 +53,24 @@ Edit `config/configuration.yml`:
 
 ### 4. Set Up Users
 
-The default user is:
-- **Username:** `admin`
-- **Password:** `changeme`
-- **Email:** `admin@yourdomain.com`
-
-**IMPORTANT:** Change this password immediately!
-
-To generate a new password hash:
+Create your user database from the template:
 
 ```bash
-docker run authelia/authelia:latest authelia crypto hash generate argon2 --password 'your-new-password'
+cp config/users_database.yml.example config/users_database.yml
 ```
 
-Then update `config/users_database.yml` with the new hash.
+Generate a secure password hash:
+
+```bash
+docker run authelia/authelia:latest authelia crypto hash generate argon2 --password 'your-secure-password'
+```
+
+Edit `config/users_database.yml` and:
+- Replace `REPLACE_WITH_YOUR_GENERATED_HASH` with your generated hash
+- Update email address
+- Update displayname as needed
+
+**IMPORTANT:** Never commit `config/users_database.yml` to version control (it's in .gitignore).
 
 ### 5. Deploy
 
@@ -135,9 +139,9 @@ access_control:
 ## First Login
 
 1. Navigate to `https://auth.yourdomain.com`
-2. Login with username `admin` and password `changeme`
+2. Login with username `admin` and the password you set in `users_database.yml`
 3. Set up 2FA by scanning QR code with authenticator app
-4. Change your password in the user settings
+4. You can add more users by editing `config/users_database.yml`
 
 ## Troubleshooting
 
