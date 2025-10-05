@@ -3,8 +3,6 @@ services:
     image: authelia/authelia:latest
     container_name: authelia
     volumes:
-      - /etc/authelia/configuration.yml:/config/configuration.yml:ro
-      - /etc/authelia/users_database.yml:/config/users_database.yml:ro
       - authelia-data:/var/lib/authelia
     environment:
       - TZ=America/Chicago
