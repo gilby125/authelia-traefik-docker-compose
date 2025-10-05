@@ -15,6 +15,7 @@ services:
       - traefik.http.routers.authelia.rule=Host(`${AUTHELIA_DOMAIN}`)
       - traefik.http.routers.authelia.entrypoints=websecure
       - traefik.http.routers.authelia.tls.certresolver=letsencrypt
+      - traefik.http.routers.authelia.service=authelia
       - traefik.http.services.authelia.loadbalancer.server.port=9091
       # Authelia middleware
       - traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://${AUTHELIA_DOMAIN}
