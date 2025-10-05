@@ -16,10 +16,10 @@ services:
       - traefik.http.routers.authelia.entrypoints=websecure
       - traefik.http.routers.authelia.tls.certresolver=letsencrypt
       - traefik.http.routers.authelia.service=authelia
-      - traefik.http.routers.authelia.middlewares=authelia-ipwhitelist
+      - traefik.http.routers.authelia.middlewares=authelia-ipallowlist
       - traefik.http.services.authelia.loadbalancer.server.port=9091
-      # IP Whitelist middleware - restrict access to admin IPs and Tailscale
-      - traefik.http.middlewares.authelia-ipwhitelist.ipwhitelist.sourcerange=${ADMIN_IP_WHITELIST:-100.0.0.0/8,10.0.0.0/16}
+      # IP Allow List middleware - restrict access to admin IPs and Tailscale
+      - traefik.http.middlewares.authelia-ipallowlist.ipallowlist.sourcerange=${ADMIN_IP_WHITELIST:-100.0.0.0/8,10.0.0.0/16}
       # Authelia forwardauth middleware (for protecting other services)
       - traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://${AUTHELIA_DOMAIN}
       - traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true
