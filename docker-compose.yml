@@ -10,8 +10,10 @@ services:
       - AUTHELIA_STORAGE_ENCRYPTION_KEY=${AUTHELIA_STORAGE_ENCRYPTION_KEY}
     labels:
       - traefik.enable=true
+      - traefik.docker.network=dokploy-network
       - traefik.http.routers.authelia.rule=Host(`${AUTHELIA_DOMAIN}`)
       - traefik.http.routers.authelia.entrypoints=websecure
+      - traefik.http.routers.authelia.tls=true
       - traefik.http.routers.authelia.tls.certresolver=letsencrypt
       - traefik.http.routers.authelia.service=authelia
       - traefik.http.routers.authelia.middlewares=auth-ipallowlist
