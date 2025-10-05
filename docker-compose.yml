@@ -5,7 +5,7 @@ services:
     volumes:
       - /etc/authelia/configuration.yml:/config/configuration.yml:ro
       - /etc/authelia/users_database.yml:/config/users_database.yml:ro
-      - authelia-data:/config
+      - authelia-data:/var/lib/authelia
     environment:
       - TZ=America/Chicago
       - AUTHELIA_SESSION_SECRET=${AUTHELIA_SESSION_SECRET}
@@ -16,10 +16,10 @@ services:
       - traefik.http.routers.authelia.entrypoints=websecure
       - traefik.http.routers.authelia.tls.certresolver=letsencrypt
       - traefik.http.routers.authelia.service=authelia
-      - traefik.http.routers.authelia.middlewares=authelia-ipallowlist
+      - traefik.http.routers.authelia.middlewares=auth-ipallowlist
       - traefik.http.services.authelia.loadbalancer.server.port=9091
       # IP Allow List middleware - restrict access to admin IPs and Tailscale
-      - traefik.http.middlewares.authelia-ipallowlist.ipallowlist.sourcerange=${ADMIN_IP_WHITELIST:-100.0.0.0/8,10.0.0.0/16}
+      - traefik.http.middlewares.auth-ipallowlist.ipallowlist.sourcerange=${ADMIN_IP_WHITELIST:-100.0.0.0/8,10.0.0.0/16}
       # Authelia forwardauth middleware (for protecting other services)
       - traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://${AUTHELIA_DOMAIN}
       - traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true
