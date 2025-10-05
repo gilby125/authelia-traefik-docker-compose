@@ -104,7 +104,7 @@ configs:
       users:
         ${AUTHELIA_USER}:
           displayname: "${AUTHELIA_USER_DISPLAYNAME}"
-          password: "${AUTHELIA_USER_PASSWORD_HASH}"
+          password: '${AUTHELIA_USER_PASSWORD_HASH}'
           email: ${AUTHELIA_USER_EMAIL}
           groups:
             - admins
