@@ -19,7 +19,7 @@ services:
       - traefik.http.routers.authelia.middlewares=auth-ipallowlist
       - traefik.http.services.authelia.loadbalancer.server.port=9091
       # IP Allow List middleware - restrict access to admin IPs and Tailscale
-      - traefik.http.middlewares.auth-ipallowlist.ipallowlist.sourcerange=${ADMIN_IP_WHITELIST:-100.0.0.0/8,10.0.0.0/16}
+      - traefik.http.middlewares.auth-ipallowlist.ipallowlist.sourcerange=100.0.0.0/8, 10.0.0.0/16, 71.82.245.129/32
       # Authelia forwardauth middleware (for protecting other services)
       - traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://${AUTHELIA_DOMAIN}
       - traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true
