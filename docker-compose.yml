@@ -2,16 +2,12 @@ services:
   authelia:
     image: authelia/authelia:latest
     container_name: authelia
-    configs:
-      - source: authelia_config
-        target: /config/configuration.yml
-      - source: authelia_users
-        target: /config/users_database.yml
     volumes:
+      - /etc/authelia/configuration.yml:/config/configuration.yml:ro
+      - /etc/authelia/users_database.yml:/config/users_database.yml:ro
       - authelia-data:/config
     environment:
       - TZ=America/Chicago
-      - AUTHELIA_JWT_SECRET=${AUTHELIA_JWT_SECRET}
       - AUTHELIA_SESSION_SECRET=${AUTHELIA_SESSION_SECRET}
       - AUTHELIA_STORAGE_ENCRYPTION_KEY=${AUTHELIA_STORAGE_ENCRYPTION_KEY}
     labels:
@@ -36,79 +32,6 @@ services:
 volumes:
   authelia-data:
   authelia-redis:
-
-configs:
-  authelia_config:
-    content: |
-      ---
-      theme: dark
-      default_2fa_method: "totp"
-
-      server:
-        host: 0.0.0.0
-        port: 9091
-
-      log:
-        level: info
-
-      totp:
-        issuer: ${AUTHELIA_DOMAIN}
-        period: 30
-        skew: 1
-
-      authentication_backend:
-        file:
-          path: /config/users_database.yml
-          password:
-            algorithm: argon2id
-            iterations: 1
-            key_length: 32
-            salt_length: 16
-            memory: 64
-            parallelism: 8
-
-      access_control:
-        default_policy: deny
-        rules:
-          - domain: "${AUTHELIA_DOMAIN}"
-            policy: bypass
-          - domain: "*.${AUTHELIA_BASE_DOMAIN}"
-            policy: one_factor
-
-      session:
-        name: authelia_session
-        expiration: 1h
-        inactivity: 5m
-        remember_me_duration: 1M
-        domain: ${AUTHELIA_BASE_DOMAIN}
-        redis:
-          host: redis
-          port: 6379
-
-      regulation:
-        max_retries: 3
-        find_time: 2m
-        ban_time: 5m
-
-      storage:
-        local:
-          path: /config/db.sqlite3
-
-      notifier:
-        filesystem:
-          filename: /config/notification.txt
-
-  authelia_users:
-    content: |
-      ---
-      users:
-        ${AUTHELIA_USER}:
-          displayname: "${AUTHELIA_USER_DISPLAYNAME}"
-          password: '${AUTHELIA_USER_PASSWORD_HASH}'
-          email: ${AUTHELIA_USER_EMAIL}
-          groups:
-            - admins
-            - dev
 
 networks:
   default:

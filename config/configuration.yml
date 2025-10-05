@@ -3,44 +3,32 @@ theme: dark
 default_2fa_method: "totp"
 
 server:
-  host: 0.0.0.0
-  port: 9091
+  address: "tcp://0.0.0.0:9091/"
 
 log:
   level: info
 
 totp:
-  issuer: authelia.com
+  issuer: auth.yourdomain.com
   period: 30
   skew: 1
 
 authentication_backend:
   file:
     path: /config/users_database.yml
-    password:
-      algorithm: argon2id
-      iterations: 1
-      key_length: 32
-      salt_length: 16
-      memory: 64
-      parallelism: 8
 
 access_control:
   default_policy: deny
   rules:
-    # Authelia portal
-    - domain: "AUTHELIA_DOMAIN_PLACEHOLDER"
+    - domain: "auth.yourdomain.com"
       policy: bypass
-    # Protected apps - require authentication
     - domain: "*.yourdomain.com"
       policy: one_factor
 
 session:
-  name: authelia_session
-  expiration: 1h
-  inactivity: 5m
-  remember_me_duration: 1M
-  domain: yourdomain.com
+  cookies:
+    - domain: yourdomain.com
+      authelia_url: https://auth.yourdomain.com
   redis:
     host: redis
     port: 6379
@@ -57,3 +45,7 @@ storage:
 notifier:
   filesystem:
     filename: /config/notification.txt
+
+identity_validation:
+  reset_password:
+    jwt_secret: CHANGE_ME_GENERATE_WITH_OPENSSL_RAND_HEX_32
