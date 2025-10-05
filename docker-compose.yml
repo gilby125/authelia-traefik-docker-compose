@@ -3,7 +3,7 @@ services:
     image: authelia/authelia:latest
     container_name: authelia
     volumes:
-      - authelia-data:/var/lib/authelia
+      - authelia-data:/config
     environment:
       - TZ=America/Chicago
       - AUTHELIA_SESSION_SECRET=${AUTHELIA_SESSION_SECRET}
