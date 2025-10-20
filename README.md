@@ -175,6 +175,3 @@ access_control:
 - [Configuration Reference](https://www.authelia.com/configuration/prologue/introduction/)
 - [Traefik Integration](https://www.authelia.com/integration/proxies/traefik/)
 
-## License
-
-Configuration files provided as-is. Authelia is licensed under Apache 2.0.
